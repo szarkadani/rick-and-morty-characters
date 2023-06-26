@@ -1,4 +1,5 @@
 import { Card, Badge, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CharacterData } from "../types";
@@ -43,7 +44,7 @@ function ProfilePage() {
   const statusColor = getStatusColor(status);
 
   return (
-    <div>
+    <Container>
       <Card className="my-3 py-3">
         <Row>
           <Col sm={12} md={4}>
@@ -88,7 +89,7 @@ function ProfilePage() {
       <Link to="/" className="btn btn-light my-3">
         Go Back
       </Link>
-    </div>
+    </Container>
   );
 }
 

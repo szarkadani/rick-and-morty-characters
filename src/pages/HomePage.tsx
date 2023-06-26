@@ -37,10 +37,8 @@ function HomePage() {
         }
 
         if (data.info && data.info.next) {
-          // Continue to next page if available
           page++;
         } else {
-          // Break the loop if there are no more pages
           break;
         }
       }
@@ -61,21 +59,46 @@ function HomePage() {
 
   return (
     <div>
-      <Form.Group controlId="search">
-        <Form.Control
-          type="text"
-          placeholder="Search characters..."
-          value={searchQuery}
-          onChange={handleSearchChange}
-        />
-      </Form.Group>
-      <Row>
-        {filteredCharacters.map((character) => (
-          <Col sm={12} md={6} lg={4} xl={3} key={character.id}>
-            <Character character={character} />
-          </Col>
-        ))}
-      </Row>
+      <header
+        style={{
+          backgroundImage: "url('/cover.png')",
+          position: "relative",
+          height: "500px",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      >
+        <div
+          style={{
+            position: "absolute",
+            bottom: "10px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            padding: "10px",
+            borderRadius: "3px",
+            width: "40%",
+          }}
+        >
+          <Form.Group controlId="search" className="mb-0">
+            <Form.Control
+              type="text"
+              placeholder="Search characters..."
+              value={searchQuery}
+              onChange={handleSearchChange}
+              className="rounded-pill"
+            />
+          </Form.Group>
+        </div>
+      </header>
+      <div className="container py-4">
+        <Row>
+          {filteredCharacters.map((character) => (
+            <Col sm={12} md={6} lg={4} xl={3} key={character.id}>
+              <Character character={character} />
+            </Col>
+          ))}
+        </Row>
+      </div>
     </div>
   );
 }

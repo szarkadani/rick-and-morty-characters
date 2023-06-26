@@ -7,12 +7,10 @@ import ProfilePage from "./pages/ProfilePage";
 function App() {
   return (
     <Router>
-      <Container>
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/character/:id" element={<ProfilePage />} />
-        </Routes>
-      </Container>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/character/:id" element={<ProfilePage />} />
+      </Routes>
     </Router>
   );
 }
