@@ -1,15 +1,7 @@
 import { useState, useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 import Character from "../components/Character";
-
-interface CharacterData {
-  id: number;
-  name: string;
-  image: string;
-  species: string;
-  status: string;
-}
-
+import { CharacterData } from "../types";
 function HomePage() {
   const [characters, setCharacters] = useState<CharacterData[]>([]);
 
