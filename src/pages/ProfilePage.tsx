@@ -1,32 +1,20 @@
 import { Card, Badge, Row, Col } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
 import { CharacterData } from "../types";
 import { getStatusColor } from "../utils";
+import Loading from "../components/Loading";
+import { useAppSelector } from "../hooks";
 
 function ProfilePage() {
-  const { id } = useParams<{ id: string }>();
-  const [character, setCharacter] = useState<CharacterData | null>(null);
-
-  useEffect(() => {
-    fetchCharacter();
-  }, []);
-
-  const fetchCharacter = async () => {
-    try {
-      const response = await fetch(
-        `https://rickandmortyapi.com/api/character/${id}`
-      );
-      const data = await response.json();
-      setCharacter(data);
-    } catch (error) {
-      console.log("Error fetching character:", error);
-    }
-  };
+  const { id } = useParams<{ id?: string }>();
+  const { characters } = useAppSelector((state) => state.characters);
+  const character: CharacterData | undefined = characters.find(
+    (char: CharacterData) => char.id === parseInt(id || "")
+  );
 
   if (!character) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const {
