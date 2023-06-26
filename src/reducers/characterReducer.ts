@@ -3,22 +3,40 @@ import {
   GET_CHARACTERS_REQUEST,
   GET_CHARACTERS_SUCCESS,
   GET_CHARACTERS_FAILURE,
+  GET_CHARACTER_BY_ID_REQUEST,
+  GET_CHARACTER_BY_ID_SUCCESS,
+  GET_CHARACTER_BY_ID_FAILURE,
 } from "../actions/characterActions";
 import { CharacterData } from "../types";
 
-interface CharacterState {
+interface CharacterListState {
   characters: CharacterData[];
   loading: boolean;
   error: string | null;
 }
 
-const initialState: CharacterState = {
+interface CharacterDetailState {
+  character: CharacterData | null;
+  loading: boolean;
+  error: string | null;
+}
+
+const initialCharacterListState: CharacterListState = {
   characters: [],
   loading: false,
   error: null,
 };
 
-const characterReducer = (state = initialState, action: AnyAction) => {
+const initialCharacterDetailState: CharacterDetailState = {
+  character: null,
+  loading: false,
+  error: null,
+};
+
+export const characterListReducer = (
+  state = initialCharacterListState,
+  action: AnyAction
+) => {
   switch (action.type) {
     case GET_CHARACTERS_REQUEST:
       return { ...state, loading: true, error: null };
@@ -39,4 +57,18 @@ const characterReducer = (state = initialState, action: AnyAction) => {
   }
 };
 
-export default characterReducer;
+export const characterDetailReducer = (
+  state = initialCharacterDetailState,
+  action: AnyAction
+) => {
+  switch (action.type) {
+    case GET_CHARACTER_BY_ID_REQUEST:
+      return { ...state, loading: true, error: null };
+    case GET_CHARACTER_BY_ID_SUCCESS:
+      return { ...state, character: action.payload, loading: false };
+    case GET_CHARACTER_BY_ID_FAILURE:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};

@@ -29,7 +29,7 @@ function HomePage() {
           <Form.Group controlId="search" className="mb-0">
             <Form.Control
               type="text"
-              placeholder="Search characters..."
+              placeholder="Search characters by name..."
               value={searchQuery}
               onChange={handleSearchChange}
               className="rounded-pill"

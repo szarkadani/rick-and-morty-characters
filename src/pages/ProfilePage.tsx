@@ -1,20 +1,28 @@
 import { Card, Badge, Row, Col } from "react-bootstrap";
 import { Container } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
-import { CharacterData } from "../types";
+import { useEffect } from "react";
 import { getStatusColor } from "../utils";
 import Loading from "../components/Loading";
-import { useAppSelector } from "../hooks";
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { fetchCharacterById } from "../actions/characterActions";
 
 function ProfilePage() {
   const { id } = useParams<{ id?: string }>();
-  const { characters } = useAppSelector((state) => state.characters);
-  const character: CharacterData | undefined = characters.find(
-    (char: CharacterData) => char.id === parseInt(id || "")
-  );
+  const dispatch = useAppDispatch();
+  const character = useAppSelector((state) => state.character.character);
+  const loading = useAppSelector((state) => state.character.loading);
+
+  useEffect(() => {
+    dispatch(fetchCharacterById(parseInt(id || "")));
+  }, [dispatch, id]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (!character) {
-    return <Loading />;
+    return <div>Character not found.</div>;
   }
 
   const {
@@ -64,7 +72,7 @@ function ProfilePage() {
               </Card.Text>
               <Card.Text>
                 <strong>Episodes:</strong>{" "}
-                {episode.map((ep) => (
+                {episode.map((ep: string) => (
                   <Badge key={ep} className="mr-1">
                     Episode {ep.split("/").pop()}
                   </Badge>
