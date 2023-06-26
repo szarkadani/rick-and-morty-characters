@@ -1,21 +1,14 @@
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { CharacterData } from "../types";
+import { getStatusColor } from "../utils";
 
 interface CharacterProps {
   character: CharacterData;
 }
 
 function Character({ character }: CharacterProps) {
-  let statusColor = "";
-
-  if (character.status === "Alive") {
-    statusColor = "green";
-  } else if (character.status === "Dead") {
-    statusColor = "red";
-  } else {
-    statusColor = "lightgray";
-  }
+  const statusColor = getStatusColor(character.status);
 
   return (
     <Card className="my-3 py-3">

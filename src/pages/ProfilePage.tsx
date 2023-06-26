@@ -2,6 +2,7 @@ import { Card, Badge, Row, Col } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { CharacterData } from "../types";
+import { getStatusColor } from "../utils";
 
 function ProfilePage() {
   const { id } = useParams<{ id: string }>();
@@ -39,6 +40,8 @@ function ProfilePage() {
     episode,
   } = character;
 
+  const statusColor = getStatusColor(status);
+
   return (
     <div>
       <Card className="my-3 py-3">
@@ -52,7 +55,8 @@ function ProfilePage() {
                 {name}
               </Card.Title>
               <Card.Text>
-                <strong>Status:</strong> {status}
+                <strong>Status:</strong>{" "}
+                <span style={{ color: statusColor }}>{status}</span>
               </Card.Text>
               <Card.Text>
                 <strong>Species:</strong> {species}
