@@ -12,9 +12,7 @@ function Character({ character }: CharacterProps) {
 
   return (
     <Card className="my-3 py-3">
-      <Link to={`/character/${character.id}`}>
-        <Card.Img src={character.image} />
-      </Link>
+      <Card.Img src={character.image} />
       <Card.Body>
         <Link to={`/character/${character.id}`}>
           <Card.Title as="div">

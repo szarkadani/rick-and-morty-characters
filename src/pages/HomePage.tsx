@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Form } from "react-bootstrap";
 import Character from "../components/Character";
 import { CharacterData } from "../types";
+
 function HomePage() {
   const [characters, setCharacters] = useState<CharacterData[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchAllCharacters();
@@ -49,10 +51,26 @@ function HomePage() {
     }
   };
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const filteredCharacters = characters.filter((character) =>
+    character.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div>
+      <Form.Group controlId="search">
+        <Form.Control
+          type="text"
+          placeholder="Search characters..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </Form.Group>
       <Row>
-        {characters.map((character) => (
+        {filteredCharacters.map((character) => (
           <Col sm={12} md={6} lg={4} xl={3} key={character.id}>
             <Character character={character} />
           </Col>
