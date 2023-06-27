@@ -10,45 +10,43 @@ export const GET_CHARACTER_BY_ID_REQUEST = "GET_CHARACTER_BY_ID_REQUEST";
 export const GET_CHARACTER_BY_ID_SUCCESS = "GET_CHARACTER_BY_ID_SUCCESS";
 export const GET_CHARACTER_BY_ID_FAILURE = "GET_CHARACTER_BY_ID_FAILURE";
 
-export const fetchCharacters = () => {
+export const fetchCharacters = (page = 1, pageSize = 20) => {
   return async (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     dispatch({ type: GET_CHARACTERS_REQUEST });
-    console.log("fetching.");
+    console.log(`fetching page ${page} with page size ${pageSize}.`);
     try {
-      let page = 1;
-      let fetchedCharacters: CharacterData[] = [];
+      const response = await axios.get(
+        `https://rickandmortyapi.com/api/character?page=${page}&pageSize=${pageSize}`
+      );
 
-      while (true) {
-        const response = await axios.get(
-          `https://rickandmortyapi.com/api/character?page=${page}`
+      const data = response.data;
+
+      if (data.results) {
+        const charactersOnPage: CharacterData[] = data.results.map(
+          (result: CharacterData) => ({
+            id: result.id,
+            name: result.name,
+            image: result.image,
+            species: result.species,
+            status: result.status,
+          })
         );
 
-        const data = response.data;
-
-        if (data.results) {
-          const charactersOnPage: CharacterData[] = data.results.map(
-            (result: CharacterData) => ({
-              id: result.id,
-              name: result.name,
-              image: result.image,
-              species: result.species,
-              status: result.status,
-            })
-          );
-          fetchedCharacters = fetchedCharacters.concat(charactersOnPage);
-        }
+        dispatch({
+          type: GET_CHARACTERS_SUCCESS,
+          payload: charactersOnPage,
+        });
 
         if (data.info && data.info.next) {
-          page++;
-        } else {
-          break;
+          const nextPage = page + 1;
+          dispatch(fetchCharacters(nextPage, pageSize)); // Fetch next page recursively
         }
+      } else {
+        dispatch({
+          type: GET_CHARACTERS_SUCCESS,
+          payload: [],
+        });
       }
-
-      dispatch({
-        type: GET_CHARACTERS_SUCCESS,
-        payload: fetchedCharacters,
-      });
     } catch (error: any) {
       dispatch({ type: GET_CHARACTERS_FAILURE, payload: error.message });
     }

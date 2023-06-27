@@ -46,9 +46,12 @@ export const characterListReducer = (
       const newCharacters = payload.filter(
         (character: CharacterData) => !existingIds.includes(character.id)
       );
+
       return {
         ...state,
         characters: [...state.characters, ...newCharacters],
+        loading: false,
+        error: null,
       };
     case GET_CHARACTERS_FAILURE:
       return { ...state, loading: false, error: action.payload };
