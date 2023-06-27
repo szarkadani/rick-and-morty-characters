@@ -1,28 +1,31 @@
-import { Card, Badge, Row, Col } from "react-bootstrap";
-import { Container } from "react-bootstrap";
+import { Card, Badge, Row, Col, Container, Alert } from "react-bootstrap";
 import { useParams, Link } from "react-router-dom";
 import { useEffect } from "react";
 import { getStatusColor } from "../utils";
-import Loading from "../components/Loading";
 import { useAppDispatch, useAppSelector } from "../hooks";
 import { fetchCharacterById } from "../actions/characterActions";
+import Loading from "../components/Loading";
 
 function ProfilePage() {
   const { id } = useParams<{ id?: string }>();
   const dispatch = useAppDispatch();
-  const character = useAppSelector((state) => state.character.character);
-  const loading = useAppSelector((state) => state.character.loading);
+  const { character, loading, error } = useAppSelector(
+    (state) => state.character
+  );
 
   useEffect(() => {
     dispatch(fetchCharacterById(parseInt(id || "")));
   }, [dispatch, id]);
 
-  if (loading) {
-    return <Loading />;
-  }
-
   if (!character) {
-    return <div>Character not found.</div>;
+    return (
+      <div>
+        <Alert variant="danger">Character not found.</Alert>;
+        <Link to="/" className="btn btn-light my-3">
+          Go Back
+        </Link>
+      </div>
+    );
   }
 
   const {
@@ -38,6 +41,21 @@ function ProfilePage() {
   } = character;
 
   const statusColor = getStatusColor(status);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <div>
+        <Alert variant="danger">{error}</Alert>;
+        <Link to="/" className="btn btn-light my-3">
+          Go Back
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <Container>
