@@ -1,19 +1,18 @@
 /* app.css */
 .header {
-    background-image: url('/public/cover.png');
-    position: relative;
-    height: 500px;
-    background-size: cover;
-    background-position: center;
-  }
-  
-  .search-container {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 10px;
-    border-radius: 3px;
-    width: 40%;
-  }
-  
+  background-image: url("/public/cover.png");
+  position: relative;
+  height: 500px;
+  background-size: cover;
+  background-position: center;
+}
+
+.search-container {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px;
+  border-radius: 3px;
+  width: 40%;
+}
